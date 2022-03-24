@@ -25,7 +25,7 @@ def send_email(contact_obj, letter_number):
             econnection.starttls()
             econnection.login(user=my_email, password=my_password)
             econnection.sendmail(from_addr=my_email, to_addrs=contact_obj.email,
-                                msg=f"subject:{email_subject}\n\n{email_letter}")
+                                 msg=f"subject:{email_subject}\n\n{email_letter}")
 
 
 if birthday_line:
@@ -46,7 +46,7 @@ if birthday_line:
         print("File wasn't found! Make, continue with letter one for this person(s) and record them")
         new_data = pandas.DataFrame([x.return_self_list_append_one()
                                      for x in contacts]).to_csv("birthday_sent_list.csv")
-        #Send the first letter
+        # Send the first letter
         for person in contacts:
             send_email(contact_obj=person, letter_number=1)
     except smtplib.SMTPAuthenticationError:
@@ -61,22 +61,10 @@ if birthday_line:
         for x in list_of_letter_numbers:
             for person in contacts:
                 if x[1] == person.name:
-                    send_email(contact_obj=person, letter_number=x[5]+1)
+                    send_email(contact_obj=person, letter_number=x[5] + 1)
                     # Save the number of the letter just sent
-                    edited_contacts.append(person.return_self_list_append(x[5]+1))
-                    if x[5]+1 > 3:
+                    edited_contacts.append(person.return_self_list_append(x[5] + 1))
+                    if x[5] + 1 > 3:
                         print("ALERT NEED MORE LETTERS")
                         send_email(contact.Contact(name="David", email="fiattarone@me.com"), 99999)
         pandas.DataFrame([x for x in edited_contacts]).to_csv("birthday_sent_list.csv")
-
-# Monday
-# if now.weekday() == 0:
-#     subject = "Inspirational Quote"
-#     with open("quotes.txt") as quotes:
-#         quoteList = quotes.readlines()
-#         body = choice(quoteList)
-#
-#     with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
-#         connection.starttls()
-#         connection.login(user=my_email, password=my_password)
-#         connection.sendmail(from_addr=my_email, to_addrs="fiattarone@me.com", msg=f"subject:{subject}\n\n{body}")
